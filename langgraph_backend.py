@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-llm = ChatGroq(MODEL = "openai/gpt-oss-120b")
+llm = ChatGroq(model= "openai/gpt-oss-120b")
 
 class ChatState(TypedDict):
     messages: Annotated[list[BaseMessage], add_messages]
