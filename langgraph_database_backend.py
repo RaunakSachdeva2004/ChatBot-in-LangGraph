@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, Annotated
-from langchain_core.messages import BaseMessage
+from langchain_core.messages import BaseMessage, HumanMessage
 from langchain_groq import ChatGroq
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph.message import add_messages
@@ -20,7 +20,6 @@ def chat_node(state: ChatState):
     return {"messages": [response]}
 
 conn = sqlite3.connect(database='chatbot.db', check_same_thread=False)
-
 # Checkpointer
 checkpointer = SqliteSaver(conn = conn)
 
@@ -32,3 +31,13 @@ graph.add_edge("chat_node", END)
 chatbot = graph.compile(checkpointer=checkpointer)
 
 
+#test
+CONFIG = {'configurable': {'thread_id': 'thread-1'}}
+
+response = chatbot.invoke(
+            {'messages': [HumanMessage(content='what is my name ')]},
+            config = CONFIG,
+            )
+
+
+print(response)
