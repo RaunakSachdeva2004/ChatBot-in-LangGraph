@@ -88,7 +88,7 @@ if user_input:
         st.text(user_input)
         
         
-    CONFIG = {'configurable': {'thread_id': st.session_state['thread_id']}}
+    config = {'configurable': {'thread_id': st.session_state['thread_id']}}
     #first add the msg to msg history
     
     with st.chat_message("ai"):
@@ -96,7 +96,7 @@ if user_input:
         ai_message = st.write_stream(
             message_chunk.content for message_chunk, metadata in chatbot.stream(
             {'messages': [HumanMessage(content=user_input)]},
-            config = CONFIG,
+            config = config,
             stream_mode='messages'
             )
         )
