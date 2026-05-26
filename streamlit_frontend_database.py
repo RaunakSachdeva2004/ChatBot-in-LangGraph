@@ -2,6 +2,7 @@ import streamlit as st
 from langgraph_database_backend import chatbot, retrieve_all_threads
 from langchain_core.messages import HumanMessage
 import uuid
+from langchain_core.runnables import RunnableConfig
 
 
 # **************************************** utility functions *************************
@@ -88,13 +89,21 @@ if user_input:
         st.text(user_input)
         
         
-    config = {'configurable': {'thread_id': st.session_state['thread_id']}}
-    #first add the msg to msg history
+    config: RunnableConfig = {
+    "configurable": {
+        "thread_id": st.session_state["thread_id"]
+    },
+    "metadata": {
+        "thread_id": st.session_state["thread_id"]
+    },
+    "run_name": "chat_turn",
+}
     
     with st.chat_message("ai"):
 
         ai_message = st.write_stream(
-            message_chunk.content for message_chunk, metadata in chatbot.stream(
+            message_chunk.content
+            for message_chunk, metadata in chatbot.stream(
             {'messages': [HumanMessage(content=user_input)]},
             config = config,
             stream_mode='messages'
