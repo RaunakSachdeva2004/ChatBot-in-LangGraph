@@ -12,7 +12,6 @@ from langchain_core.tools import tool
 from dotenv import load_dotenv
 import sqlite3
 import requests
-from langchain_core.runnables import RunnableConfig
 
 load_dotenv()
 
